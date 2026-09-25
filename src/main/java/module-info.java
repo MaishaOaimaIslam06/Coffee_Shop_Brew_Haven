@@ -4,6 +4,7 @@ module com.example.coffeeshop {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
 
     opens com.example.coffeeshop to javafx.fxml;
     exports com.example.coffeeshop;
