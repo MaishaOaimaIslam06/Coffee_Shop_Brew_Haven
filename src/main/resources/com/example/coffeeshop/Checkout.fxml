@@ -14,14 +14,17 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.coffeeshop.CheckoutController">
    <children>
       <ImageView fitHeight="450.0" fitWidth="800.0" layoutX="254.0" layoutY="139.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@location.jpg" />
          </image>
       </ImageView>
-      <VBox layoutX="25.0" layoutY="26.0" prefHeight="400.0" prefWidth="750.0" style="-fx-background-color: beige; -fx-background-radius: 20px;">
+      <VBox fx:id="checkoutBox" layoutX="25.0" layoutY="26.0" prefHeight="400.0" prefWidth="750.0" style="-fx-background-color: beige; -fx-background-radius: 20px;">
          <children>
             <Label text="CHECKOUT" textFill="#4d0808">
                <font>
@@ -44,7 +47,7 @@
                         <Insets left="40.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="20.0" prefWidth="400.0" />
+                  <TextField fx:id="addressField" prefHeight="20.0" prefWidth="400.0" />
                </children>
             </HBox>
             <Label text="Payment Method: " textFill="#4d0808">
@@ -78,7 +81,7 @@
                         <Font name="Georgia Bold" size="15.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton fx:id="Hbox" mnemonicParsing="false" text="Nagad" textFill="#320606">
+                  <RadioButton fx:id="nagadRadio" mnemonicParsing="false" text="Nagad" textFill="#320606">
                      <font>
                         <Font name="Georgia Bold" size="15.0" />
                      </font>
