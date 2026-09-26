@@ -24,9 +24,24 @@
             <Font name="Avenir Next Medium Italic" size="15.0" />
          </font>
       </Label>
-      <Button layoutX="172.0" layoutY="390.0" mnemonicParsing="false" onAction="#viewMenu" prefHeight="47.0" prefWidth="161.0" style="-fx-background-color: #967969;" text="Tap to View Menu" textFill="WHITE">
+      <Button layoutX="201.0" layoutY="431.0" mnemonicParsing="false" onAction="#viewMenu" prefHeight="35.0" prefWidth="173.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Tap to View Menu" textFill="WHITE">
          <font>
             <Font name="Arial Bold Italic" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="68.0" layoutY="378.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Admin" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="68.0" layoutY="431.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Cashier" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="205.0" layoutY="378.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Barista" textFill="WHITE">
+         <font>
+            <Font name="Georgia Bold" size="15.0" />
          </font>
       </Button>
    </children>
