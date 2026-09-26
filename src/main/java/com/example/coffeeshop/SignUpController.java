@@ -35,17 +35,22 @@ public class SignUpController {
             return;
         }
 
-        Database.registerUser(name, password, mobile);
+        boolean registered = Database.registerUser(name, password, mobile);
 
-        Parent root = FXMLLoader.load(
-                getClass().getResource("Checkout.fxml")
-        );
+        if (registered) {
 
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
+            System.out.println("Sign up successful!");
 
-        stage.setScene(new Scene(root));
-        stage.show();
+            Parent root = FXMLLoader.load(
+                    getClass().getResource("Checkout.fxml")
+            );
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
     }
 }
