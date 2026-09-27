@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coffeeshop.UserManagementController">
    <children>
       <ImageView fitHeight="550.0" fitWidth="1000.0" layoutX="269.0" layoutY="158.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -26,18 +25,19 @@
                   <Font name="Georgia Bold" size="27.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="userTable" prefHeight="300.0" prefWidth="200.0" style="-fx-background-color: #F5F1D8; -fx-background-radius: 12; -fx-border-color: #8B5E3C; -fx-border-width: 2; -fx-border-radius: 12;">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="idColumn" prefWidth="300.0" text="ID" />
+                <TableColumn fx:id="nameColumn" prefWidth="350.0" text="Name" />
+                  <TableColumn fx:id="roleColumn" prefWidth="300.0" text="Role" />
               </columns>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
             </TableView>
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="114.0" style="-fx-background-color: #79492F; -fx-background-radius: 15px; -fx-text-fill: beige;" text="&lt;- Back">
+            <Button mnemonicParsing="false" onAction="#goBack" prefHeight="20.0" prefWidth="114.0" style="-fx-background-color: #79492F; -fx-background-radius: 15px; -fx-text-fill: beige;" text="&lt;- Back">
                <VBox.margin>
-                  <Insets right="700.0" top="150.0" />
+                  <Insets right="700.0" top="85.0" />
                </VBox.margin>
                <font>
                   <Font name="Georgia Bold" size="22.0" />

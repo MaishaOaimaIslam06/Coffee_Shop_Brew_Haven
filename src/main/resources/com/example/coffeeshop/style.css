@@ -1,0 +1,44 @@
+.table-view {
+    -fx-background-color: #F5F1D8;
+    -fx-background-radius: 12;
+    -fx-border-color: #8B5E3C;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #8B5E3C;
+    -fx-background-radius: 10 10 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #FFF8EA;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #6B3518;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 15px;
+    -fx-alignment: CENTER;
+    -fx-background-color: #F5F1D8;
+}
+
+.table-row-cell {
+    -fx-background-color: #F5F1D8;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #D8B892;
+}
+
+.table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: #4A2816;
+}

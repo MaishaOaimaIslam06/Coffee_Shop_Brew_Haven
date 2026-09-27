@@ -64,7 +64,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="184.0" text="৳150" textFill="#6b3518">
+                  <Label fx:id="espressoPriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="184.0" text="৳150" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
@@ -94,7 +94,7 @@
                         <Font name="Georgia Bold" size="21.0" />
                      </font>
                   </Label>
-                  <Label text="৳200" textFill="#6b3518">
+                  <Label fx:id="lattePriceLabel" text="৳200" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="19.0" />
                      </font>
@@ -121,7 +121,7 @@
                         <Font name="Georgia Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="177.0" text="৳170" textFill="#6b3518">
+                  <Label fx:id="macchiatoPriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="177.0" text="৳170" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
@@ -151,7 +151,7 @@
                         <Font name="Georgia Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="173.0" text="৳180" textFill="#6b3518">
+                  <Label fx:id="cappuccinoPriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="173.0" text="৳180" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
@@ -183,7 +183,7 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="191.0" text="৳220" textFill="#6b3518">
+                  <Label fx:id="mochaPriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="191.0" text="৳220" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
@@ -213,7 +213,7 @@
                         <Font name="Georgia Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="178.0" text="৳160" textFill="#6b3518">
+                  <Label fx:id="americanoPriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="178.0" text="৳160" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
@@ -246,7 +246,7 @@
                         <Insets top="25.0" />
                      </padding>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="178.0" text="৳230" textFill="#6b3518">
+                  <Label fx:id="caramelLattePriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="178.0" text="৳230" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
@@ -282,7 +282,7 @@
                         <Insets top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="184.0" text="৳190" textFill="#6b3518">
+                  <Label fx:id="coldBrewPriceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="184.0" text="৳190" textFill="#6b3518">
                      <font>
                         <Font name="Georgia Bold" size="18.0" />
                      </font>

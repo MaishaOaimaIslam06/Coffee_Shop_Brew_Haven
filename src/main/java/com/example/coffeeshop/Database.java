@@ -30,19 +30,39 @@ public class Database {
 
     // Create table
     public static void createTables() {
+
         String createUsersTable = """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                password TEXT NOT NULL,
-                mobile TEXT NOT NULL,
-                role TEXT NOT NULL DEFAULT 'Customer'
-            );
-            """;
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            password TEXT NOT NULL,
+            mobile TEXT NOT NULL,
+            role TEXT NOT NULL DEFAULT 'Customer'
+        );
+        """;
+
+        String createMenuTable = """
+        CREATE TABLE IF NOT EXISTS menu (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price REAL NOT NULL
+        );
+        """;
+
+        String createOrdersTable = """
+    CREATE TABLE IF NOT EXISTS orders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer TEXT NOT NULL,
+        items TEXT NOT NULL,
+        total REAL NOT NULL,
+        status TEXT NOT NULL DEFAULT 'Pending'
+    );
+    """;
 
         try (Connection connection = connect();
              Statement statement = connection.createStatement()) {
 
+            // Create users table
             statement.execute(createUsersTable);
 
             // Add role column to an existing database
@@ -54,7 +74,16 @@ public class Database {
                 // role column already exists
             }
 
+            // Create menu table
+            statement.execute(createMenuTable);
+
+            statement.execute(createOrdersTable);
+
+            System.out.println("Orders table ready!");
+
             System.out.println("Users table ready!");
+            System.out.println("Menu table ready!");
+            System.out.println("Orders table ready!");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -229,6 +258,111 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    public static void deleteOldCustomers() {
+
+        String sql = "DELETE FROM users WHERE role != 'Admin'";
+
+        try (Connection connection = connect();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.executeUpdate();
+
+            System.out.println("Old customers deleted.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void insertDefaultMenu() {
+
+        String sql = """
+        INSERT INTO menu (name, price)
+        SELECT ?, ?
+        WHERE NOT EXISTS (
+            SELECT 1 FROM menu WHERE name = ?
+        );
+        """;
+
+        try (Connection connection = connect();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            addMenuItem(statement, "Espresso", 150);
+            addMenuItem(statement, "Cappuccino", 180);
+            addMenuItem(statement, "Latte", 200);
+            addMenuItem(statement, "Macchiato", 170);
+            addMenuItem(statement, "Mocha", 220);
+            addMenuItem(statement, "Americano", 160);
+            addMenuItem(statement, "Caramel Latte", 230);
+            addMenuItem(statement, "Cold Brew", 190);
+
+            System.out.println("Menu items ready!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void addMenuItem(
+            PreparedStatement statement,
+            String name,
+            double price) throws SQLException {
+
+        statement.setString(1, name);
+        statement.setDouble(2, price);
+        statement.setString(3, name);
+
+        statement.executeUpdate();
+    }
+    public static double getMenuPrice(String name) {
+
+        String sql = "SELECT price FROM menu WHERE name = ?";
+
+        try (Connection connection = connect();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setString(1, name);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getDouble("price");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+    public static void saveOrder(
+            String customer,
+            String items,
+            double total) {
+
+        String sql = """
+        INSERT INTO orders (customer, items, total, status)
+        VALUES (?, ?, ?, 'Pending')
+        """;
+
+        try (Connection connection = connect();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setString(1, customer);
+            statement.setString(2, items);
+            statement.setDouble(3, total);
+
+            statement.executeUpdate();
+
+            System.out.println("Order saved!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

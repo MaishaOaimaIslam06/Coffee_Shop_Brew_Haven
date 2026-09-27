@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,52 +14,131 @@ import java.io.IOException;
 public class MenuController {
 
     @FXML
+    private Label espressoPriceLabel;
+
+    @FXML
+    private Label cappuccinoPriceLabel;
+
+    @FXML
+    private Label lattePriceLabel;
+
+    @FXML
+    private Label macchiatoPriceLabel;
+
+    @FXML
+    private Label mochaPriceLabel;
+
+    @FXML
+    private Label americanoPriceLabel;
+
+    @FXML
+    private Label caramelLattePriceLabel;
+
+    @FXML
+    private Label coldBrewPriceLabel;
+
+
+    @FXML
+    public void initialize() {
+
+        espressoPriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Espresso"))
+        );
+
+        cappuccinoPriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Cappuccino"))
+        );
+
+        lattePriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Latte"))
+        );
+
+        macchiatoPriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Macchiato"))
+        );
+
+        mochaPriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Mocha"))
+        );
+
+        americanoPriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Americano"))
+        );
+
+        caramelLattePriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Caramel Latte"))
+        );
+
+        coldBrewPriceLabel.setText(
+                String.valueOf(Database.getMenuPrice("Cold Brew"))
+        );
+    }
+
+
+    @FXML
     private void addEspresso(ActionEvent event) {
-        Cart.addItem(new Coffee("Espresso", 150));
-        System.out.println("Espresso added to cart!");
+        Cart.addItem(
+                new Coffee("Espresso",
+                        Database.getMenuPrice("Espresso"))
+        );
     }
 
     @FXML
     private void addCappuccino(ActionEvent event) {
-        Cart.addItem(new Coffee("Cappuccino", 180));
-        System.out.println("Cappuccino added to cart!");
+        Cart.addItem(
+                new Coffee("Cappuccino",
+                        Database.getMenuPrice("Cappuccino"))
+        );
     }
 
     @FXML
     private void addLatte(ActionEvent event) {
-        Cart.addItem(new Coffee("Latte", 200));
-        System.out.println("Latte added to cart!");
+        Cart.addItem(
+                new Coffee("Latte",
+                        Database.getMenuPrice("Latte"))
+        );
     }
 
     @FXML
     private void addMacchiato(ActionEvent event) {
-        Cart.addItem(new Coffee("Macchiato", 170));
-        System.out.println("Macchiato added to cart!");
+        Cart.addItem(
+                new Coffee("Macchiato",
+                        Database.getMenuPrice("Macchiato"))
+        );
     }
 
     @FXML
     private void addMocha(ActionEvent event) {
-        Cart.addItem(new Coffee("Mocha", 220));
-        System.out.println("Mocha added to cart!");
+        Cart.addItem(
+                new Coffee("Mocha",
+                        Database.getMenuPrice("Mocha"))
+        );
     }
 
     @FXML
     private void addAmericano(ActionEvent event) {
-        Cart.addItem(new Coffee("Americano", 160));
-        System.out.println("Americano added to cart!");
+        Cart.addItem(
+                new Coffee("Americano",
+                        Database.getMenuPrice("Americano"))
+        );
     }
 
     @FXML
     private void addCaramelLatte(ActionEvent event) {
-        Cart.addItem(new Coffee("Caramel Latte", 230));
-        System.out.println("Caramel Latte added to cart!");
+        Cart.addItem(
+                new Coffee("Caramel Latte",
+                        Database.getMenuPrice("Caramel Latte"))
+        );
     }
 
     @FXML
     private void addColdBrew(ActionEvent event) {
-        Cart.addItem(new Coffee("Cold Brew", 190));
-        System.out.println("Cold Brew added to cart!");
+        Cart.addItem(
+                new Coffee("Cold Brew",
+                        Database.getMenuPrice("Cold Brew"))
+        );
     }
+
 
     @FXML
     private void viewCart(ActionEvent event) throws IOException {

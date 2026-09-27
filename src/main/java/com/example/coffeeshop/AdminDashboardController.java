@@ -14,17 +14,48 @@ public class AdminDashboardController {
 
     @FXML
     private void openUserManagement(ActionEvent event) throws IOException {
-        System.out.println("User Management clicked!");
+
+        Parent root = FXMLLoader.load(
+                getClass().getResource("UserManagement.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
     private void openMenuManagement(ActionEvent event) throws IOException {
-        System.out.println("Menu Management clicked!");
+        System.out.println("Menu button clicked!");
+        Parent root = FXMLLoader.load(
+                getClass().getResource("MenuManagement.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
+
     }
 
     @FXML
     private void openOrderManagement(ActionEvent event) throws IOException {
-        System.out.println("Order Management clicked!");
+
+        Parent root = FXMLLoader.load(
+                getClass().getResource("OrderManagement.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

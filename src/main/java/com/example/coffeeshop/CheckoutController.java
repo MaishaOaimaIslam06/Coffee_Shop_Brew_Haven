@@ -31,7 +31,29 @@ public class CheckoutController {
     @FXML
     private void placeOrder() {
 
-        System.out.println("Order placed!");
+        String customer = CurrentUser.name;
 
+        StringBuilder items = new StringBuilder();
+
+        for (Coffee coffee : Cart.getItems()) {
+
+            if (items.length() > 0) {
+                items.append(", ");
+            }
+
+            items.append(coffee.getName());
+        }
+
+        double total = Cart.getTotal();
+
+        Database.saveOrder(
+                customer,
+                items.toString(),
+                total
+        );
+
+        Cart.clearCart();
+
+        System.out.println("Order placed successfully!");
     }
 }

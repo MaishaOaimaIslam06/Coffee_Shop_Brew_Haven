@@ -31,6 +31,7 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (Database.loginUser(name, password)) {
+            CurrentUser.name = name;
 
             Parent root = FXMLLoader.load(
                     getClass().getResource("Checkout.fxml")
