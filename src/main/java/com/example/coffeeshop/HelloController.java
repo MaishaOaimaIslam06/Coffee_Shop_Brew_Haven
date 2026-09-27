@@ -40,4 +40,18 @@ public class HelloController {
         stage.setScene(new Scene(root));
         stage.show();
     }
+    @FXML
+    private void openBaristaDashboard(ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(
+                getClass().getResource("BaristaDashboard.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 }

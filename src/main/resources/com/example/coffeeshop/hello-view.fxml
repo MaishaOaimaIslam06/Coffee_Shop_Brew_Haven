@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@coffee_shop_entering_image%20.jpg" />
+            <Image url="@coffee_shop_entering_image.jpg" />
          </image>
       </ImageView>
       <Label layoutX="56.0" layoutY="216.0" prefHeight="54.0" prefWidth="467.0" text="Welcome to Brew Haven " textFill="WHITE">
@@ -39,7 +39,7 @@
             <Font name="Georgia Bold" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="205.0" layoutY="378.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Barista" textFill="WHITE">
+      <Button layoutX="205.0" layoutY="378.0" mnemonicParsing="false" onAction="#openBaristaDashboard" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Barista" textFill="WHITE">
          <font>
             <Font name="Georgia Bold" size="15.0" />
          </font>
