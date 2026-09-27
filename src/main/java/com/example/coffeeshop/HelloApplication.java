@@ -10,12 +10,17 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
         Database.testConnection();
         Database.createTables();
         Database.createDefaultAdmin();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+
+        FXMLLoader fxmlLoader =
+                new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
-        stage.setTitle("Hello!");
+
+        stage.setTitle("Coffee Shop");
         stage.setScene(scene);
         stage.show();
     }

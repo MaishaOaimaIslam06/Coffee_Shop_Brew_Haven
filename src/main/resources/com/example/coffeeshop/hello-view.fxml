@@ -29,7 +29,7 @@
             <Font name="Arial Bold Italic" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="68.0" layoutY="378.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Admin" textFill="WHITE">
+      <Button layoutX="68.0" layoutY="378.0" mnemonicParsing="false" onAction="#openAdminLogin" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Admin" textFill="WHITE">
          <font>
             <Font name="Georgia Bold" size="15.0" />
          </font>

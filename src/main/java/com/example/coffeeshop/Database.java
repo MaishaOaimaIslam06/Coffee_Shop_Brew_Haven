@@ -30,7 +30,6 @@ public class Database {
 
     // Create table
     public static void createTables() {
-
         String createUsersTable = """
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,13 +45,13 @@ public class Database {
 
             statement.execute(createUsersTable);
 
-            // Add role column to old database if it does not exist
+            // Add role column to an existing database
             try {
                 statement.execute(
                         "ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'Customer'"
                 );
             } catch (SQLException ignored) {
-                // Column already exists
+                // role column already exists
             }
 
             System.out.println("Users table ready!");
@@ -61,6 +60,69 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    public static void createDefaultAdmin() {
+
+        String checkSql = """
+            SELECT id FROM users
+            WHERE role = 'Admin'
+            LIMIT 1
+            """;
+
+        String updateSql = """
+            UPDATE users
+            SET name = ?, password = ?, mobile = ?, role = 'Admin'
+            WHERE id = ?
+            """;
+
+        String insertSql = """
+            INSERT INTO users(name, password, mobile, role)
+            VALUES (?, ?, ?, ?)
+            """;
+
+        try (Connection connection = connect();
+             PreparedStatement checkStatement =
+                     connection.prepareStatement(checkSql);
+             ResultSet result = checkStatement.executeQuery()) {
+
+            if (result.next()) {
+
+                // Admin already exists → make it fixed
+                int adminId = result.getInt("id");
+
+                try (PreparedStatement updateStatement =
+                             connection.prepareStatement(updateSql)) {
+
+                    updateStatement.setString(1, "Oaima");
+                    updateStatement.setString(2, "1234");
+                    updateStatement.setString(3, "01992000000");
+                    updateStatement.setInt(4, adminId);
+
+                    updateStatement.executeUpdate();
+                }
+
+            } else {
+
+                // No Admin exists → create fixed Admin
+                try (PreparedStatement insertStatement =
+                             connection.prepareStatement(insertSql)) {
+
+                    insertStatement.setString(1, "Oaima");
+                    insertStatement.setString(2, "1234");
+                    insertStatement.setString(3, "01992000000");
+                    insertStatement.setString(4, "Admin");
+
+                    insertStatement.executeUpdate();
+                }
+            }
+
+            System.out.println("Fixed Admin account ready!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Register new user
     public static boolean registerUser(String name, String password, String mobile) {
@@ -140,58 +202,25 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public static void createDefaultAdmin() {
 
-        String checkSql = """
-            SELECT id FROM users
-            WHERE role = 'Admin'
-            """;
-
-        String insertSql = """
-            INSERT INTO users(name, password, mobile, role)
-            VALUES (?, ?, ?, ?)
-            """;
-
-        try (Connection connection = connect();
-             PreparedStatement checkStatement =
-                     connection.prepareStatement(checkSql);
-             ResultSet result = checkStatement.executeQuery()) {
-
-            // Admin already exists
-            if (result.next()) {
-                return;
-            }
-
-            try (PreparedStatement insertStatement =
-                         connection.prepareStatement(insertSql)) {
-
-                insertStatement.setString(1, "Admin");
-                insertStatement.setString(2, "admin123");
-                insertStatement.setString(3, "00000000000");
-                insertStatement.setString(4, "Admin");
-
-                insertStatement.executeUpdate();
-
-                System.out.println("Default Admin account created!");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public static boolean adminLogin(String name, String password) {
+    public static boolean adminLogin(String name, String phone, String password) {
 
         String sql = """
             SELECT id
             FROM users
-            WHERE name = ? AND password = ? AND role = 'Admin'
+            WHERE name = ?
+              AND mobile = ?
+              AND password = ?
+              AND role = 'Admin'
             """;
 
         try (Connection connection = connect();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
 
             statement.setString(1, name);
-            statement.setString(2, password);
+            statement.setString(2, phone);
+            statement.setString(3, password);
 
             ResultSet result = statement.executeQuery();
 
