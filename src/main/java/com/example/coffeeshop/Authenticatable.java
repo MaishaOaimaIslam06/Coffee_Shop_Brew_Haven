@@ -1,4 +1,7 @@
 package com.example.coffeeshop;
 
-public class Authenticatable {
+public interface Authenticatable {
+
+    boolean login(String password);
+
 }

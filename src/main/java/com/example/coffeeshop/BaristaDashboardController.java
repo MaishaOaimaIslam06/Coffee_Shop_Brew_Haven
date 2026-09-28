@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -44,11 +45,11 @@ public class BaristaDashboardController {
     private ObservableList<Order> orderList =
             FXCollections.observableArrayList();
 
-
     private ExecutorService executor =
             Executors.newFixedThreadPool(3);
 
     private Timeline refreshTimer;
+    private int selectedOrderId = -1;
 
     @FXML
     public void initialize() {
@@ -69,6 +70,21 @@ public class BaristaDashboardController {
                 new PropertyValueFactory<>("status")
         );
 
+        // TableView-তে list একবার set করবো
+        orderTable.setItems(orderList);
+        orderTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldOrder, newOrder) -> {
+
+                    if (newOrder != null) {
+                        selectedOrderId = newOrder.getId();
+
+                        System.out.println(
+                                "Selected Order ID: " + selectedOrderId
+                        );
+                    }
+                });
+
         loadOrders();
 
         refreshTimer = new Timeline(
@@ -82,14 +98,15 @@ public class BaristaDashboardController {
         refreshTimer.play();
     }
 
+
     private void loadOrders() {
 
         String sql = """
-                SELECT id, customer, items, status
-                FROM orders
-                WHERE status != 'Cancelled'
-                ORDER BY id DESC
-                """;
+            SELECT id, customer, items, status
+            FROM orders
+            WHERE status IN ('Pending', 'Preparing', 'Completed')
+            ORDER BY id DESC
+            """;
 
         try (Connection connection = Database.connect();
              PreparedStatement statement =
@@ -111,100 +128,166 @@ public class BaristaDashboardController {
                 orderList.add(order);
             }
 
-            orderTable.setItems(orderList);
+
+
+            System.out.println(
+                    "Orders loaded: " + orderList.size()
+            );
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
+    // ==============================
+    // START PREPARING
+    // ==============================
+
     @FXML
     private void startPreparing() {
 
-        Order selectedOrder =
-                orderTable.getSelectionModel()
-                        .getSelectedItem();
+        if (selectedOrderId == -1) {
 
-        if (selectedOrder == null) {
-            return;
-        }
+            System.out.println(
+                    "Please select an order first!"
+            );
 
-        if (!selectedOrder.getStatus().equals("Pending")) {
             return;
         }
 
         executor.submit(() -> {
 
             String sql =
-                    "UPDATE orders SET status = 'Preparing' WHERE id = ?";
+                    "UPDATE orders " +
+                            "SET status = 'Preparing' " +
+                            "WHERE id = ? " +
+                            "AND status = 'Pending'";
 
             try (Connection connection = Database.connect();
                  PreparedStatement statement =
                          connection.prepareStatement(sql)) {
 
-                statement.setInt(1, selectedOrder.getId());
+                statement.setInt(1, selectedOrderId);
 
-                statement.executeUpdate();
+                int rowsUpdated =
+                        statement.executeUpdate();
 
                 javafx.application.Platform.runLater(() -> {
-                    loadOrders();
+
+                    if (rowsUpdated > 0) {
+
+                        System.out.println(
+                                "Order "
+                                        + selectedOrderId
+                                        + " is now Preparing."
+                        );
+
+                        loadOrders();
+
+                    } else {
+
+                        System.out.println(
+                                "Order is not Pending."
+                        );
+                    }
                 });
 
             } catch (SQLException e) {
+
                 e.printStackTrace();
             }
         });
     }
+
+
+    // ==============================
+    // COMPLETE ORDER
+    // ==============================
+
     @FXML
     private void completeOrder() {
 
-        Order selectedOrder =
-                orderTable.getSelectionModel()
-                        .getSelectedItem();
+        if (selectedOrderId == -1) {
 
-        if (selectedOrder == null) {
-            return;
-        }
+            System.out.println(
+                    "Please select an order first!"
+            );
 
-        if (!selectedOrder.getStatus().equals("Preparing")) {
             return;
         }
 
         executor.submit(() -> {
 
             String sql =
-                    "UPDATE orders SET status = 'Completed' WHERE id = ?";
+                    "UPDATE orders " +
+                            "SET status = 'Completed' " +
+                            "WHERE id = ? " +
+                            "AND status = 'Preparing'";
 
             try (Connection connection = Database.connect();
                  PreparedStatement statement =
                          connection.prepareStatement(sql)) {
 
-                statement.setInt(1, selectedOrder.getId());
+                statement.setInt(1, selectedOrderId);
 
-                statement.executeUpdate();
+                int rowsUpdated =
+                        statement.executeUpdate();
 
                 javafx.application.Platform.runLater(() -> {
-                    loadOrders();
+
+                    if (rowsUpdated > 0) {
+
+                        System.out.println(
+                                "Order "
+                                        + selectedOrderId
+                                        + " is now Completed."
+                        );
+
+                        loadOrders();
+
+                    } else {
+
+                        System.out.println(
+                                "Order is not Preparing."
+                        );
+                    }
                 });
 
             } catch (SQLException e) {
+
                 e.printStackTrace();
             }
         });
-
     }
+
+
+    // ==============================
+    // LOGOUT
+    // ==============================
+
     @FXML
     private void logout(ActionEvent event) throws IOException {
+
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
+
+        executor.shutdown();
+
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("hello-view.fxml")
         );
 
+
         Stage stage = (Stage) ((Node) event.getSource())
                 .getScene()
                 .getWindow();
 
-        stage.setScene(new Scene(root, 1000, 650));
+
+        stage.setScene(new Scene(root));
+
         stage.show();
     }
-
 }

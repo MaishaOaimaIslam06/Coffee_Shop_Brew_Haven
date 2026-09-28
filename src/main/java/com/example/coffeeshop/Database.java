@@ -349,10 +349,10 @@ public class Database {
             String paymentStatus) {
 
         String sql = """
-        INSERT INTO orders
-        (customer, items, total, status, payment_status)
-        VALUES (?, ?, ?, 'Pending', ?)
-        """;
+    INSERT INTO orders
+    (customer, items, total, status, payment_status)
+    VALUES (?, ?, ?, 'Pending', ?)
+    """;
 
         try (Connection connection = connect();
              PreparedStatement statement =
@@ -366,6 +366,13 @@ public class Database {
             statement.executeUpdate();
 
             System.out.println("Order saved!");
+
+            // ADD THIS
+            System.out.println(
+                    "Database location: "
+                            + new java.io.File("CoffeeShop.db")
+                            .getAbsolutePath()
+            );
 
         } catch (SQLException e) {
             e.printStackTrace();

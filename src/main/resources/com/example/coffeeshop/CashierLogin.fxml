@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coffeeshop.CashierLoginController">
    <children>
       <ImageView fitHeight="650.0" fitWidth="1000.0" layoutX="187.0" layoutY="125.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -18,7 +17,7 @@
             <Image url="@Signup.jpeg" />
          </image>
       </ImageView>
-      <VBox layoutX="42.0" layoutY="42.0" prefHeight="334.0" prefWidth="533.0" style="-fx-background-color: beige; -fx-background-radius: 15px;">
+      <VBox layoutX="101.0" layoutY="80.0" prefHeight="476.0" prefWidth="795.0" style="-fx-background-color: beige; -fx-background-radius: 15px;">
          <children>
             <Label text="Cashier Login" textFill="#5e1515">
                <font>
@@ -28,9 +27,9 @@
                   <Insets left="40.0" top="60.0" />
                </VBox.margin>
             </Label>
-            <PasswordField fx:id="passwordField" prefHeight="26.0" prefWidth="180.0">
+            <PasswordField fx:id="passwordField" prefHeight="26.0" prefWidth="100.0">
                <VBox.margin>
-                  <Insets left="90.0" right="90.0" top="80.0" />
+                  <Insets left="200.0" right="200.0" top="80.0" />
                </VBox.margin>
             </PasswordField>
             <Label fx:id="errorLabel" prefWidth="400.0" textFill="#b21919">
@@ -43,7 +42,7 @@
             </Label>
             <Button mnemonicParsing="false" onAction="#login" style="-fx-background-color: #79492F; -fx-background-radius: 15px; -fx-text-fill: beige;" text="Login">
                <VBox.margin>
-                  <Insets left="220.0" top="40.0" />
+                  <Insets left="350.0" top="40.0" />
                </VBox.margin>
                <font>
                   <Font name="Georgia Bold" size="18.0" />

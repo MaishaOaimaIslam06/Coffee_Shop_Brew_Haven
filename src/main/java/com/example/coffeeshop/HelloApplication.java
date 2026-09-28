@@ -2,6 +2,7 @@ package com.example.coffeeshop;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -19,12 +20,18 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader =
                 new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
+        Parent root = fxmlLoader.load();
+
+        Scene scene = new Scene(root);
 
         stage.setTitle("Coffee Shop");
         stage.setScene(scene);
 
-        stage.setResizable(true);   // window resize করা যাবে
+        stage.setMinWidth(800);
+        stage.setMinHeight(500);
+
+        stage.setResizable(true);
+
         stage.show();
     }
 }

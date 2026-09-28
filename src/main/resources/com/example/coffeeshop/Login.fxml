@@ -59,6 +59,21 @@
                   <PasswordField fx:id="passwordField" prefWidth="400.0" />
                </children>
             </HBox>
+            <Label fx:id="errorLabel"
+                   text=""
+                   textFill="#B22222"
+                   wrapText="true">
+
+               <font>
+                  <Font name="Georgia"
+                        size="14.0" />
+               </font>
+
+               <VBox.margin>
+                  <Insets left="250.0" />
+               </VBox.margin>
+
+            </Label>
             <Button fx:id="loginButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#login" prefHeight="14.0" prefWidth="74.0" style="-fx-background-color: #79492F; -fx-text-fill: beige; -fx-background-radius: 15px;" text="Login" textFill="#430f0f">
                <font>
                   <Font name="Georgia Bold" size="17.0" />

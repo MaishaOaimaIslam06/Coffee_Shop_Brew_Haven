@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -25,13 +26,25 @@ public class LoginController {
     private Button signUpButton;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
     private void login(ActionEvent event) throws IOException {
 
         String name = nameField.getText();
         String password = passwordField.getText();
 
-        if (Database.loginUser(name, password)) {
+        errorLabel.setText("");
+
+        CustomerAccount customer =
+                new CustomerAccount(name, password);
+
+        if (Database.loginUser(name, password)
+                && customer.login(password)) {
+
             CurrentUser.name = name;
+
+            customer.showDashboard();
 
             Parent root = FXMLLoader.load(
                     getClass().getResource("Checkout.fxml")
@@ -45,7 +58,10 @@ public class LoginController {
             stage.show();
 
         } else {
-            System.out.println("Invalid name or password!");
+
+            errorLabel.setText(
+                    "Invalid account or username/password!"
+            );
         }
     }
 

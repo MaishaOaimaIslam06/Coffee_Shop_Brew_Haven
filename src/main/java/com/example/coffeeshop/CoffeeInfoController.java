@@ -10,6 +10,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,20 +24,49 @@ import java.net.http.HttpResponse;
 public class CoffeeInfoController {
 
     @FXML
-    private Label infoLabel;
+    private VBox coffeeBox;
 
-    private final HttpClient client = HttpClient.newHttpClient();
-    private final ObjectMapper mapper = new ObjectMapper();
+    @FXML
+    private ScrollPane scrollPane;
+
+
+    private final HttpClient client =
+            HttpClient.newHttpClient();
+
+    private final ObjectMapper mapper =
+            new ObjectMapper();
+
 
     @FXML
     private void getCoffeeInfo() {
 
-        infoLabel.setText("Loading coffee information...");
+        // Clear previous information
+        coffeeBox.getChildren().clear();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.sampleapis.com/coffee/hot"))
-                .GET()
-                .build();
+
+        Label loadingLabel = new Label(
+                "Loading coffee information..."
+        );
+
+        loadingLabel.setFont(
+                new Font("Georgia", 18)
+        );
+
+        coffeeBox.getChildren().add(
+                loadingLabel
+        );
+
+
+        HttpRequest request =
+                HttpRequest.newBuilder()
+                        .uri(
+                                URI.create(
+                                        "https://api.sampleapis.com/coffee/hot"
+                                )
+                        )
+                        .GET()
+                        .build();
+
 
         client.sendAsync(
                 request,
@@ -45,75 +77,181 @@ public class CoffeeInfoController {
 
                 String json = response.body();
 
-                JsonNode root = mapper.readTree(json);
+                JsonNode root =
+                        mapper.readTree(json);
 
-                StringBuilder information = new StringBuilder();
-
-                // Show first 8 coffee information
-                for (int i = 0; i < 8 && i < root.size(); i++) {
-
-                    JsonNode coffee = root.get(i);
-
-                    String title = coffee.get("title").asText();
-
-                    String description =
-                            coffee.get("description").asText();
-
-                    StringBuilder ingredients =
-                            new StringBuilder();
-
-                    for (JsonNode item : coffee.get("ingredients")) {
-
-                        if (ingredients.length() > 0) {
-                            ingredients.append(", ");
-                        }
-
-                        ingredients.append(item.asText());
-                    }
-
-                    information.append(
-                            (i + 1) + ". " + title + "\n\n"
-                    );
-
-                    information.append(
-                            "Description: "
-                                    + description + "\n\n"
-                    );
-
-                    information.append(
-                            "Ingredients: "
-                                    + ingredients + "\n\n"
-                    );
-
-                    information.append(
-                            "────────────────────────\n\n"
-                    );
-                }
 
                 Platform.runLater(() -> {
 
-                    infoLabel.setText(
-                            information.toString()
-                    );
+                    coffeeBox.getChildren().clear();
+
+
+                    // Show first 8 coffee information
+                    for (
+                            int i = 0;
+                            i < 8 && i < root.size();
+                            i++
+                    ) {
+
+                        JsonNode coffee =
+                                root.get(i);
+
+
+                        String title =
+                                coffee.get("title")
+                                        .asText();
+
+
+                        String description =
+                                coffee.get("description")
+                                        .asText();
+
+
+                        StringBuilder ingredients =
+                                new StringBuilder();
+
+
+                        for (
+                                JsonNode item :
+                                coffee.get("ingredients")
+                        ) {
+
+                            if (ingredients.length() > 0) {
+                                ingredients.append(", ");
+                            }
+
+                            ingredients.append(
+                                    item.asText()
+                            );
+                        }
+
+
+                        // Coffee title
+                        Label titleLabel =
+                                new Label(
+                                        (i + 1) +
+                                                ". " +
+                                                title
+                                );
+
+                        titleLabel.setFont(
+                                new Font(
+                                        "Georgia Bold",
+                                        20
+                                )
+                        );
+
+                        titleLabel.setStyle(
+                                "-fx-text-fill: #5e1515;"
+                        );
+
+
+                        // Description
+                        Label descriptionLabel =
+                                new Label(
+                                        "Description: "
+                                                + description
+                                );
+
+                        descriptionLabel.setFont(
+                                new Font(
+                                        "Georgia",
+                                        16
+                                )
+                        );
+
+                        descriptionLabel.setWrapText(true);
+
+                        descriptionLabel.setMaxWidth(
+                                800
+                        );
+
+
+                        // Ingredients
+                        Label ingredientsLabel =
+                                new Label(
+                                        "Ingredients: "
+                                                + ingredients
+                                );
+
+                        ingredientsLabel.setFont(
+                                new Font(
+                                        "Georgia",
+                                        16
+                                )
+                        );
+
+                        ingredientsLabel.setWrapText(true);
+
+                        ingredientsLabel.setMaxWidth(
+                                800
+                        );
+
+
+                        // Separator
+                        Label separator =
+                                new Label(
+                                        "────────────────────────────"
+                                );
+
+                        separator.setStyle(
+                                "-fx-text-fill: #79492F;"
+                        );
+
+
+                        // Add everything
+                        coffeeBox.getChildren().addAll(
+                                titleLabel,
+                                descriptionLabel,
+                                ingredientsLabel,
+                                separator
+                        );
+                    }
 
                 });
 
+
             } catch (Exception e) {
 
-                Platform.runLater(() ->
-                        infoLabel.setText(
-                                "Failed to parse coffee information."
-                        )
-                );
+                Platform.runLater(() -> {
+
+                    coffeeBox.getChildren().clear();
+
+                    Label errorLabel =
+                            new Label(
+                                    "Failed to parse coffee information."
+                            );
+
+                    errorLabel.setFont(
+                            new Font("Georgia", 18)
+                    );
+
+                    coffeeBox.getChildren().add(
+                            errorLabel
+                    );
+                });
             }
+
 
         }).exceptionally(error -> {
 
-            Platform.runLater(() ->
-                    infoLabel.setText(
-                            "Internet connection or API error."
-                    )
-            );
+            Platform.runLater(() -> {
+
+                coffeeBox.getChildren().clear();
+
+                Label errorLabel =
+                        new Label(
+                                "Internet connection or API error."
+                        );
+
+                errorLabel.setFont(
+                        new Font("Georgia", 18)
+                );
+
+                coffeeBox.getChildren().add(
+                        errorLabel
+                );
+            });
 
             return null;
         });
@@ -121,19 +259,29 @@ public class CoffeeInfoController {
 
 
     @FXML
-    private void back(ActionEvent event) throws IOException {
+    private void back(ActionEvent event)
+            throws IOException {
 
-        Parent root = FXMLLoader.load(
-                getClass().getResource("AdminDashboard.fxml")
-        );
+        Parent root =
+                FXMLLoader.load(
+                        getClass().getResource(
+                                "AdminDashboard.fxml"
+                        )
+                );
 
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
 
-        Scene scene = new Scene(root);
+        Stage stage =
+                (Stage) ((Node) event.getSource())
+                        .getScene()
+                        .getWindow();
+
+
+        Scene scene =
+                new Scene(root);
+
 
         stage.setScene(scene);
+
         stage.show();
     }
 }

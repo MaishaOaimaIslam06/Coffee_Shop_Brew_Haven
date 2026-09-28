@@ -13,6 +13,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,12 +40,15 @@ public class OrderManagementController {
     @FXML
     private TableColumn<Order, Double> totalColumn;
 
+
+
     @FXML
     private TableColumn<Order, String> statusColumn;
 
     private ObservableList<Order> orderList =
             FXCollections.observableArrayList();
 
+    private Timeline refreshTimer;
 
     @FXML
     public void initialize() {
@@ -66,12 +73,29 @@ public class OrderManagementController {
                 new PropertyValueFactory<>("status")
         );
 
+        // First time load
         loadOrders();
+
+        // Automatically refresh every 2 seconds
+        refreshTimer = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(2),
+                        event -> loadOrders()
+                )
+        );
+
+        refreshTimer.setCycleCount(Timeline.INDEFINITE);
+        refreshTimer.play();
     }
 
 
     private void loadOrders() {
-
+        System.out.println("Loading orders...");
+        System.out.println(
+                "Database location: "
+                        + new java.io.File("CoffeeShop.db")
+                        .getAbsolutePath()
+        );
         String sql = """
                 SELECT id, customer, items, total, status
                 FROM orders
@@ -142,6 +166,10 @@ public class OrderManagementController {
 
     @FXML
     private void goBack(ActionEvent event) throws IOException {
+
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("AdminDashboard.fxml")
