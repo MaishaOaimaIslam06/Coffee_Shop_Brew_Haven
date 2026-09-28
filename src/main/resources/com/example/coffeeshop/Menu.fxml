@@ -304,5 +304,10 @@
             <Font name="Georgia Bold" size="17.0" />
          </font>
       </Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="597.0" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: beige; -fx-background-radius: 10;" text="Back" textFill="#721919" AnchorPane.topAnchor="605.0">
+         <font>
+            <Font name="Georgia Bold" size="17.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

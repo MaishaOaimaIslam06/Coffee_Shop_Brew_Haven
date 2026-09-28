@@ -7,10 +7,25 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 public class HelloController {
+    @FXML
+    private AnchorPane rootPane;
+
+    @FXML
+    private ImageView backgroundImage;
+    @FXML
+    public void initialize() {
+
+        backgroundImage.fitWidthProperty()
+                .bind(rootPane.widthProperty());
+
+        backgroundImage.fitHeightProperty()
+                .bind(rootPane.heightProperty());
+    }
 
     @FXML
     private void viewMenu(ActionEvent event) throws IOException {
