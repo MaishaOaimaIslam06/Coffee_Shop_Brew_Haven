@@ -7,12 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static javax.swing.DropMode.ON;
+
 public class Database {
 
     private static final String URL = "jdbc:sqlite:CoffeeShop.db";
 
     // Database connection
     public static Connection connect() throws SQLException {
+
         return DriverManager.getConnection(URL);
     }
     public static void testConnection() {
