@@ -9,15 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="550.0"
-            prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/26"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.coffeeshop.AdminDashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coffeeshop.AdminDashboardController">
    <children>
       <ImageView fitHeight="550.0" fitWidth="1000.0" layoutX="370.0" layoutY="200.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -63,7 +55,15 @@
                   <Font name="Georgia Bold" size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets left="500.0" top="40.0" />
+                  <Insets left="500.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openCoffeeInfo" style="-fx-background-color: #79492F; -fx-background-radius: 15px; -fx-text-fill: beige;" text="Coffee Info">
+               <font>
+                  <Font name="Georgia Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets right="700.0" />
                </VBox.margin>
             </Button>
          </children>

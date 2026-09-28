@@ -73,4 +73,19 @@ public class AdminDashboardController {
         stage.show();
     }
 
+    @FXML
+    private void openCoffeeInfo(ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(
+                getClass().getResource("CoffeeInfo.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root, 1000, 650));
+        stage.show();
+    }
+
 }

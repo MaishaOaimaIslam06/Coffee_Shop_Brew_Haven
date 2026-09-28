@@ -3,6 +3,7 @@ package com.example.coffeeshop;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -49,5 +50,19 @@ public class AdminLoginController {
         } else {
             messageLabel.setText("Invalid Admin information!");
         }
+    }
+    @FXML
+    private void back(ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(
+                getClass().getResource("hello-view.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root, 1000, 650));
+        stage.show();
     }
 }
