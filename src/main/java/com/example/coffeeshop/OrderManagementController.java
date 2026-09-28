@@ -1,5 +1,7 @@
 package com.example.coffeeshop;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,13 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -24,6 +26,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OrderManagementController {
+
+    @FXML
+    private AnchorPane rootPane;
+
+    @FXML
+    private ImageView backgroundImage;
 
     @FXML
     private TableView<Order> orderTable;
@@ -40,8 +48,6 @@ public class OrderManagementController {
     @FXML
     private TableColumn<Order, Double> totalColumn;
 
-
-
     @FXML
     private TableColumn<Order, String> statusColumn;
 
@@ -50,8 +56,17 @@ public class OrderManagementController {
 
     private Timeline refreshTimer;
 
+
     @FXML
     public void initialize() {
+
+        // Responsive background
+        backgroundImage.fitWidthProperty()
+                .bind(rootPane.widthProperty());
+
+        backgroundImage.fitHeightProperty()
+                .bind(rootPane.heightProperty());
+
 
         idColumn.setCellValueFactory(
                 new PropertyValueFactory<>("id")
@@ -73,10 +88,12 @@ public class OrderManagementController {
                 new PropertyValueFactory<>("status")
         );
 
-        // First time load
+
+        // First load
         loadOrders();
 
-        // Automatically refresh every 2 seconds
+
+        // Refresh every 2 seconds
         refreshTimer = new Timeline(
                 new KeyFrame(
                         Duration.seconds(2),
@@ -90,12 +107,7 @@ public class OrderManagementController {
 
 
     private void loadOrders() {
-        System.out.println("Loading orders...");
-        System.out.println(
-                "Database location: "
-                        + new java.io.File("CoffeeShop.db")
-                        .getAbsolutePath()
-        );
+
         String sql = """
                 SELECT id, customer, items, total, status
                 FROM orders
@@ -132,31 +144,63 @@ public class OrderManagementController {
 
     @FXML
     private void cancelOrder() {
-        System.out.println("Cancel button clicked!");
+
         Order selectedOrder =
                 orderTable.getSelectionModel()
                         .getSelectedItem();
 
+
+        // No order selected
         if (selectedOrder == null) {
+
+            showMessage(
+                    "No Order Selected",
+                    "Please select an order first."
+            );
+
             return;
         }
 
+
+        // Only Pending orders can be cancelled
         if (!selectedOrder.getStatus().equals("Pending")) {
+
+            showMessage(
+                    "Cannot Cancel",
+                    "Only Pending orders can be cancelled."
+            );
+
             return;
         }
+
 
         String sql =
                 "UPDATE orders SET status = 'Cancelled' WHERE id = ?";
+
 
         try (Connection connection = Database.connect();
              PreparedStatement statement =
                      connection.prepareStatement(sql)) {
 
-            statement.setInt(1, selectedOrder.getId());
+            statement.setInt(
+                    1,
+                    selectedOrder.getId()
+            );
 
-            statement.executeUpdate();
+            int rowsAffected =
+                    statement.executeUpdate();
 
-            loadOrders();
+
+            if (rowsAffected > 0) {
+
+                loadOrders();
+
+                System.out.println(
+                        "Order "
+                                + selectedOrder.getId()
+                                + " cancelled."
+                );
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,20 +208,41 @@ public class OrderManagementController {
     }
 
 
-    @FXML
-    private void goBack(ActionEvent event) throws IOException {
+    private void showMessage(
+            String title,
+            String message) {
 
+        Alert alert = new Alert(
+                Alert.AlertType.INFORMATION
+        );
+
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
+
+    @FXML
+    private void goBack(ActionEvent event)
+            throws IOException {
+
+        // Stop automatic refresh
         if (refreshTimer != null) {
             refreshTimer.stop();
         }
+
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("AdminDashboard.fxml")
         );
 
+
         Stage stage = (Stage) ((Node) event.getSource())
                 .getScene()
                 .getWindow();
+
 
         stage.setScene(new Scene(root));
         stage.show();

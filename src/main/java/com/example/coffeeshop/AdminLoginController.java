@@ -9,11 +9,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class AdminLoginController {
+
+    @FXML
+    private AnchorPane rootPane;
+
+    @FXML
+    private ImageView backgroundImage;
 
     @FXML
     private TextField usernameField;
@@ -27,6 +35,16 @@ public class AdminLoginController {
     @FXML
     private TextField phoneField;
 
+
+    @FXML
+    public void initialize() {
+
+        backgroundImage.fitWidthProperty()
+                .bind(rootPane.widthProperty());
+
+        backgroundImage.fitHeightProperty()
+                .bind(rootPane.heightProperty());
+    }
 
 
     @FXML
@@ -42,7 +60,9 @@ public class AdminLoginController {
                     getClass().getResource("AdminDashboard.fxml")
             );
 
-            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Stage stage = (Stage) usernameField
+                    .getScene()
+                    .getWindow();
 
             stage.setScene(new Scene(root));
             stage.show();
@@ -51,6 +71,8 @@ public class AdminLoginController {
             messageLabel.setText("Invalid Admin information!");
         }
     }
+
+
     @FXML
     private void back(ActionEvent event) throws IOException {
 

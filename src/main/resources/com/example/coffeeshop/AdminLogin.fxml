@@ -12,9 +12,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coffeeshop.AdminLoginController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity"
+             minHeight="-Infinity" minWidth="-Infinity"
+             prefHeight="550.0" prefWidth="900.0"
+             xmlns="http://javafx.com/javafx/26"
+             xmlns:fx="http://javafx.com/fxml/1"
+             fx:controller="com.example.coffeeshop.AdminLoginController">
    <children>
-      <ImageView fitHeight="550.0" fitWidth="900.0" layoutX="443.0" layoutY="171.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fx:id="backgroundImage"
+                 fitHeight="550.0"
+                 fitWidth="900.0"
+                 layoutX="443.0"
+                 layoutY="171.0"
+                 pickOnBounds="true"
+                 AnchorPane.bottomAnchor="0.0"
+                 AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0"
+                 AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@login.jpg" />
          </image>

@@ -38,7 +38,7 @@ public class SignUpController {
         boolean registered = Database.registerUser(name, password, mobile);
 
         if (registered) {
-
+            CurrentUser.name = name;
             System.out.println("Sign up successful!");
 
             Parent root = FXMLLoader.load(

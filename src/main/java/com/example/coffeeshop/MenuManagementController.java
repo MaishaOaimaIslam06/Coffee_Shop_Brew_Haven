@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
@@ -19,6 +21,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MenuManagementController {
+
+    @FXML
+    private AnchorPane rootPane;
+
+    @FXML
+    private ImageView backgroundImage;
 
     @FXML
     private TableView<MenuItem> menuTable;
@@ -33,13 +41,24 @@ public class MenuManagementController {
     private TableColumn<MenuItem, Double> priceColumn;
 
     @FXML
+    private TextField nameField;
+
+    @FXML
     private TextField priceField;
 
     private ObservableList<MenuItem> menuList =
             FXCollections.observableArrayList();
 
+
     @FXML
     public void initialize() {
+
+        // Responsive background
+        backgroundImage.fitWidthProperty()
+                .bind(rootPane.widthProperty());
+
+        backgroundImage.fitHeightProperty()
+                .bind(rootPane.heightProperty());
 
         idColumn.setCellValueFactory(
                 new PropertyValueFactory<>("id")
@@ -58,6 +77,11 @@ public class MenuManagementController {
                 .addListener((obs, oldItem, newItem) -> {
 
                     if (newItem != null) {
+
+                        nameField.setText(
+                                newItem.getName()
+                        );
+
                         priceField.setText(
                                 String.valueOf(newItem.getPrice())
                         );
@@ -67,11 +91,13 @@ public class MenuManagementController {
         loadMenu();
     }
 
+
     private void loadMenu() {
 
         String sql = """
                 SELECT id, name, price
                 FROM menu
+                ORDER BY id
                 """;
 
         try (Connection connection = Database.connect();
@@ -99,6 +125,54 @@ public class MenuManagementController {
         }
     }
 
+
+    @FXML
+    private void addMenuItem() {
+
+        String name = nameField.getText().trim();
+        String priceText = priceField.getText().trim();
+
+        if (name.isEmpty() || priceText.isEmpty()) {
+            return;
+        }
+
+        double price;
+
+        try {
+
+            price = Double.parseDouble(priceText);
+
+            if (price <= 0) {
+                return;
+            }
+
+        } catch (NumberFormatException e) {
+            return;
+        }
+
+        String sql =
+                "INSERT INTO menu (name, price) VALUES (?, ?)";
+
+        try (Connection connection = Database.connect();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setString(1, name);
+            statement.setDouble(2, price);
+
+            statement.executeUpdate();
+
+            nameField.clear();
+            priceField.clear();
+
+            loadMenu();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @FXML
     private void updatePrice() {
 
@@ -110,7 +184,8 @@ public class MenuManagementController {
             return;
         }
 
-        String priceText = priceField.getText();
+        String priceText =
+                priceField.getText().trim();
 
         if (priceText.isEmpty()) {
             return;
@@ -119,7 +194,13 @@ public class MenuManagementController {
         double newPrice;
 
         try {
+
             newPrice = Double.parseDouble(priceText);
+
+            if (newPrice <= 0) {
+                return;
+            }
+
         } catch (NumberFormatException e) {
             return;
         }
@@ -134,18 +215,88 @@ public class MenuManagementController {
             statement.setDouble(1, newPrice);
             statement.setInt(2, selectedItem.getId());
 
-            statement.executeUpdate();
+            int rowsAffected =
+                    statement.executeUpdate();
 
-            priceField.clear();
+            if (rowsAffected > 0) {
 
-            loadMenu();
+                nameField.clear();
+                priceField.clear();
+
+                loadMenu();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
     @FXML
-    private void goBack(ActionEvent event) throws IOException {
+    private void deleteMenuItem() {
+
+        MenuItem selectedItem =
+                menuTable.getSelectionModel()
+                        .getSelectedItem();
+
+        // No row selected
+        if (selectedItem == null) {
+            System.out.println("Please select a menu item first.");
+            return;
+        }
+
+        System.out.println(
+                "Deleting: "
+                        + selectedItem.getName()
+                        + " (ID: "
+                        + selectedItem.getId()
+                        + ")"
+        );
+
+        String sql =
+                "DELETE FROM menu WHERE id = ?";
+
+        try (Connection connection = Database.connect();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setInt(
+                    1,
+                    selectedItem.getId()
+            );
+
+            int rowsAffected =
+                    statement.executeUpdate();
+
+            System.out.println(
+                    "Rows deleted: " + rowsAffected
+            );
+
+            if (rowsAffected > 0) {
+
+                nameField.clear();
+                priceField.clear();
+
+                loadMenu();
+
+                System.out.println("Menu item deleted successfully!");
+
+            } else {
+
+                System.out.println(
+                        "No menu item was deleted."
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void goBack(ActionEvent event)
+            throws IOException {
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("AdminDashboard.fxml")

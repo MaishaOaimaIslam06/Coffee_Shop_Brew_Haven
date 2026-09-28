@@ -345,17 +345,17 @@ public class Database {
 
         return 0;
     }
-    public static void saveOrder(
+    public static boolean saveOrder(
             String customer,
             String items,
             double total,
             String paymentStatus) {
 
         String sql = """
-    INSERT INTO orders
-    (customer, items, total, status, payment_status)
-    VALUES (?, ?, ?, 'Pending', ?)
-    """;
+        INSERT INTO orders
+        (customer, items, total, status, payment_status)
+        VALUES (?, ?, ?, 'Pending', ?)
+        """;
 
         try (Connection connection = connect();
              PreparedStatement statement =
@@ -366,19 +366,25 @@ public class Database {
             statement.setDouble(3, total);
             statement.setString(4, paymentStatus);
 
-            statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
 
-            System.out.println("Order saved!");
+            if (rowsAffected > 0) {
 
-            // ADD THIS
-            System.out.println(
-                    "Database location: "
-                            + new java.io.File("CoffeeShop.db")
-                            .getAbsolutePath()
-            );
+                System.out.println("Order saved!");
+
+                System.out.println(
+                        "Database location: "
+                                + new java.io.File("CoffeeShop.db")
+                                .getAbsolutePath()
+                );
+
+                return true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 }

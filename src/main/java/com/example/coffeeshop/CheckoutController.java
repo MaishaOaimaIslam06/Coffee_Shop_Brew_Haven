@@ -31,7 +31,13 @@ public class CheckoutController {
     @FXML
     private void placeOrder() {
 
-        String customer = CurrentUser.name;
+        // Check whether a user is logged in
+        if (CurrentUser.name == null || CurrentUser.name.trim().isEmpty()) {
+            System.out.println("No customer is logged in.");
+            return;
+        }
+
+        String customer = CurrentUser.name.trim();
 
         StringBuilder items = new StringBuilder();
 
@@ -42,6 +48,12 @@ public class CheckoutController {
             }
 
             items.append(coffee.getName());
+        }
+
+        // Check whether cart is empty
+        if (items.length() == 0) {
+            System.out.println("Cart is empty.");
+            return;
         }
 
         double total = Cart.getTotal();
@@ -56,15 +68,20 @@ public class CheckoutController {
         }
 
         // Save order
-        Database.saveOrder(
+        boolean saved = Database.saveOrder(
                 customer,
                 items.toString(),
                 total,
                 paymentStatus
         );
 
-        Cart.clearCart();
+        // Clear cart only if order was successfully saved
+        if (saved) {
+            Cart.clearCart();
 
-        System.out.println("Order placed successfully!");
+            System.out.println("Order placed successfully!");
+        } else {
+            System.out.println("Order could not be placed.");
+        }
     }
 }

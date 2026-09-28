@@ -1,5 +1,7 @@
 package com.example.coffeeshop;
 
+import com.example.coffeeshop.Database;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +20,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javafx.application.Platform;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,9 +46,9 @@ public class CashierDashboardController {
     private ObservableList<Order> orderList =
             FXCollections.observableArrayList();
 
+    // Thread pool for background database tasks
     private ExecutorService executor =
             Executors.newFixedThreadPool(2);
-
 
     @FXML
     public void initialize() {
@@ -122,36 +123,51 @@ public class CashierDashboardController {
             return;
         }
 
+        int orderId = selectedOrder.getId();
+
         System.out.println(
-                "Selected Order ID: " + selectedOrder.getId()
+                "Selected Order ID: " + orderId
         );
 
-        String sql =
-                "UPDATE orders SET payment_status = 'Paid' WHERE id = ?";
+        // Database operation runs in background thread
+        executor.submit(() -> {
 
-        try (Connection connection = Database.connect();
-             PreparedStatement statement =
-                     connection.prepareStatement(sql)) {
+            String sql =
+                    "UPDATE orders SET payment_status = 'Paid' WHERE id = ?";
 
-            statement.setInt(1, selectedOrder.getId());
+            try (Connection connection = Database.connect();
+                 PreparedStatement statement =
+                         connection.prepareStatement(sql)) {
 
-            int rowsUpdated = statement.executeUpdate();
+                statement.setInt(1, orderId);
 
-            System.out.println(
-                    "Rows updated: " + rowsUpdated
-            );
+                int rowsUpdated = statement.executeUpdate();
 
-            loadOrders();
+                System.out.println(
+                        "Rows updated: " + rowsUpdated
+                );
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+                // UI update must happen on JavaFX Application Thread
+                Platform.runLater(() -> {
+                    loadOrders();
+                    System.out.println(
+                            "Payment updated successfully!"
+                    );
+                });
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
-
-
 
     @FXML
     private void logout(ActionEvent event) throws IOException {
+
+        // Stop background threads before leaving the page
+        if (!executor.isShutdown()) {
+            executor.shutdown();
+        }
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("hello-view.fxml")
@@ -165,3 +181,4 @@ public class CashierDashboardController {
         stage.show();
     }
 }
+

@@ -7,10 +7,28 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
 public class AdminDashboardController {
+    @FXML
+    private BorderPane rootPane;
+
+    @FXML
+    private ImageView backgroundImage;
+
+    @FXML
+    public void initialize() {
+
+        backgroundImage.fitWidthProperty()
+                .bind(rootPane.widthProperty());
+
+        backgroundImage.fitHeightProperty()
+                .bind(rootPane.heightProperty());
+    }
 
     @FXML
     private void openUserManagement(ActionEvent event) throws IOException {
@@ -43,8 +61,11 @@ public class AdminDashboardController {
 
     }
 
+
     @FXML
     private void openOrderManagement(ActionEvent event) throws IOException {
+
+
 
         Parent root = FXMLLoader.load(
                 getClass().getResource("OrderManagement.fxml")
