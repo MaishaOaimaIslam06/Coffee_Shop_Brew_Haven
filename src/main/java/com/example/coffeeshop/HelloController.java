@@ -44,7 +44,21 @@ public class HelloController {
     private void openBaristaDashboard(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(
-                getClass().getResource("BaristaDashboard.fxml")
+                getClass().getResource("BaristaLogin.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+    @FXML
+    private void openCashierDashboard(ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(
+                getClass().getResource("CashierLogin.fxml")
         );
 
         Stage stage = (Stage) ((Node) event.getSource())

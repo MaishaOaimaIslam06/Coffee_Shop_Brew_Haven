@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coffeeshop.CashierLoginController">
+   <children>
+      <ImageView fitHeight="650.0" fitWidth="1000.0" layoutX="187.0" layoutY="125.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@Signup.jpeg" />
+         </image>
+      </ImageView>
+      <VBox layoutX="42.0" layoutY="42.0" prefHeight="334.0" prefWidth="533.0" style="-fx-background-color: beige; -fx-background-radius: 15px;">
+         <children>
+            <Label text="Cashier Login" textFill="#5e1515">
+               <font>
+                  <Font name="Georgia Bold" size="25.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="40.0" top="60.0" />
+               </VBox.margin>
+            </Label>
+            <PasswordField fx:id="passwordField" prefHeight="26.0" prefWidth="180.0">
+               <VBox.margin>
+                  <Insets left="90.0" right="90.0" top="80.0" />
+               </VBox.margin>
+            </PasswordField>
+            <Label fx:id="errorLabel" prefWidth="400.0" textFill="#b21919">
+               <VBox.margin>
+                  <Insets left="50.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Georgia Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#login" style="-fx-background-color: #79492F; -fx-background-radius: 15px; -fx-text-fill: beige;" text="Login">
+               <VBox.margin>
+                  <Insets left="220.0" top="40.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Georgia Bold" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

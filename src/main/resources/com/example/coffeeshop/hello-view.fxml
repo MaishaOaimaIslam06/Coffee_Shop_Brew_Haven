@@ -34,7 +34,7 @@
             <Font name="Georgia Bold" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="68.0" layoutY="431.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Cashier" textFill="WHITE">
+      <Button layoutX="68.0" layoutY="431.0" mnemonicParsing="false" onAction="#openCashierDashboard" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #967969; -fx-background-radius: 20px;" text="Cashier" textFill="WHITE">
          <font>
             <Font name="Georgia Bold" size="15.0" />
          </font>

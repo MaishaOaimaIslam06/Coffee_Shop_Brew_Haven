@@ -8,6 +8,7 @@ public class Order {
     private double total;
     private String status;
 
+
     public Order(int id, String customer, String items,
                  double total, String status) {
 
@@ -16,6 +17,22 @@ public class Order {
         this.items = items;
         this.total = total;
         this.status = status;
+    }
+
+    private String paymentStatus;
+    public Order(int id, String customer, String items,
+                 double total, String status, String paymentStatus) {
+
+        this.id = id;
+        this.customer = customer;
+        this.items = items;
+        this.total = total;
+        this.status = status;
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
     public int getId() {

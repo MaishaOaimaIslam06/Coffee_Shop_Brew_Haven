@@ -46,10 +46,21 @@ public class CheckoutController {
 
         double total = Cart.getTotal();
 
+        // Payment status
+        String paymentStatus;
+
+        if (codRadio.isSelected()) {
+            paymentStatus = "Unpaid";
+        } else {
+            paymentStatus = "Paid";
+        }
+
+        // Save order
         Database.saveOrder(
                 customer,
                 items.toString(),
-                total
+                total,
+                paymentStatus
         );
 
         Cart.clearCart();

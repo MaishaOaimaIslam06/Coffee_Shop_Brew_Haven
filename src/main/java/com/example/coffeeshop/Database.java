@@ -66,13 +66,16 @@ public class Database {
             statement.execute(createUsersTable);
 
             // Add role column to an existing database
+            statement.execute(createOrdersTable);
+
             try {
                 statement.execute(
-                        "ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'Customer'"
+                        "ALTER TABLE orders ADD COLUMN payment_status TEXT NOT NULL DEFAULT 'Unpaid'"
                 );
             } catch (SQLException ignored) {
-                // role column already exists
             }
+
+            System.out.println("Orders table ready!");
 
             // Create menu table
             statement.execute(createMenuTable);
@@ -342,11 +345,13 @@ public class Database {
     public static void saveOrder(
             String customer,
             String items,
-            double total) {
+            double total,
+            String paymentStatus) {
 
         String sql = """
-        INSERT INTO orders (customer, items, total, status)
-        VALUES (?, ?, ?, 'Pending')
+        INSERT INTO orders
+        (customer, items, total, status, payment_status)
+        VALUES (?, ?, ?, 'Pending', ?)
         """;
 
         try (Connection connection = connect();
@@ -356,6 +361,7 @@ public class Database {
             statement.setString(1, customer);
             statement.setString(2, items);
             statement.setDouble(3, total);
+            statement.setString(4, paymentStatus);
 
             statement.executeUpdate();
 

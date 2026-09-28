@@ -23,6 +23,8 @@ public class HelloApplication extends Application {
 
         stage.setTitle("Coffee Shop");
         stage.setScene(scene);
+
+        stage.setResizable(true);   // window resize করা যাবে
         stage.show();
     }
 }
